@@ -5,8 +5,8 @@ import { RigidBody, CapsuleCollider, RapierRigidBody } from '@react-three/rapier
 import * as THREE from 'three';
 import { TheArchitect } from '../components/3d/TheArchitect';
 
-const SPEED = 8;
-const ROTATION_SPEED = 2;
+const SPEED = 25;
+const ROTATION_SPEED = 3;
 
 // All vectors created ONCE at module level — never re-allocated per frame
 const _moveDir = new THREE.Vector3();
