@@ -31,7 +31,7 @@ function App() {
       setPhase('world');
       // In a real app we'd crossfade audio, but for now we'll just stop the heartbeat
       audioSystem.stopHeartbeat();
-    }, 4000);
+    }, 6000);
   };
 
   return (

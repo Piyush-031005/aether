@@ -2,6 +2,7 @@ import React, { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Sparkles, Grid } from '@react-three/drei';
 import * as THREE from 'three';
+import { TheArchitectReveal } from '../components/3d/TheArchitectReveal';
 
 export const TheVoid = () => {
   const dustRef = useRef<THREE.Points>(null);
@@ -50,6 +51,9 @@ export const TheVoid = () => {
         opacity={0.5}
         color="#E0E0E0"
       />
+
+      {/* The Origin / Mascot Reveal */}
+      <TheArchitectReveal />
     </group>
   );
 };
