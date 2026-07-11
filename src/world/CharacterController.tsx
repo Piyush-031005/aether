@@ -6,6 +6,8 @@ import * as THREE from 'three';
 import { TheArchitect } from '../components/3d/TheArchitect';
 import { audioSystem } from '../systems/AudioSystem';
 
+import { useJoystickStore } from '../store/useJoystickStore';
+
 const SPEED = 25;
 const ROTATION_SPEED = 3;
 
@@ -35,7 +37,14 @@ export const CharacterController = () => {
   useFrame((state, delta) => {
     if (!bodyRef.current || !yawRef.current || !leanRef.current) return;
 
-    const { forward, backward, left, right } = getKeys();
+    const keys = getKeys();
+    const joystick = useJoystickStore.getState();
+
+    // Merge inputs
+    const forward = keys.forward || joystick.forward;
+    const backward = keys.backward || joystick.backward;
+    const left = keys.left || joystick.left;
+    const right = keys.right || joystick.right;
 
     // ── 1. Steering (YAW) — quaternion only on yawRef ──────────
     let turn = 0;

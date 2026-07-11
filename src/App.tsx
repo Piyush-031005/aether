@@ -10,6 +10,7 @@ import { TheVoid } from './world/TheVoid';
 import { World } from './world/World';
 import { audioSystem } from './systems/AudioSystem';
 import { OverlayUI } from './components/ui/OverlayUI';
+import { JoystickUI } from './components/ui/JoystickUI';
 
 // Key bindings map for the character controller
 const keyboardMap = [
@@ -159,6 +160,7 @@ function App() {
 
       {/* 2D HTML Overlays */}
       <OverlayUI />
+      <JoystickUI />
     </>
   );
 }
