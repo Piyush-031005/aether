@@ -7,7 +7,7 @@ import { BlendFunction } from 'postprocessing';
 import * as THREE from 'three';
 
 import { TheVoid } from './world/TheVoid';
-import { VerticalSlice } from './world/VerticalSlice';
+import { World } from './world/World';
 import { audioSystem } from './systems/AudioSystem';
 
 // Key bindings map for the character controller
@@ -46,7 +46,7 @@ function App() {
               
               {phase === 'world' && (
                 <Physics>
-                  <VerticalSlice />
+                  <World />
                 </Physics>
               )}
               
