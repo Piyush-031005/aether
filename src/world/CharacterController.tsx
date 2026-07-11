@@ -14,40 +14,46 @@ const _cameraOffset = new THREE.Vector3();
 const _idealCameraPos = new THREE.Vector3();
 const _playerPos = new THREE.Vector3();
 const _cameraTarget = new THREE.Vector3();
-const _targetQuat = new THREE.Quaternion();
 const _yAxis = new THREE.Vector3(0, 1, 0);
 
 export const CharacterController = () => {
   const bodyRef = useRef<RapierRigidBody>(null);
-  const meshRef = useRef<THREE.Group>(null);
+
+  // TWO separate refs — CRITICAL to prevent quaternion/euler conflict
+  // yawRef  → handles left/right rotation via quaternion (Y-axis only)
+  // leanRef → handles the tilt lean via euler Z (child of yawRef)
+  const yawRef = useRef<THREE.Group>(null);
+  const leanRef = useRef<THREE.Group>(null);
+
   const [, getKeys] = useKeyboardControls();
 
-  // useRef for per-frame mutable values — NEVER triggers React re-renders
+  // Per-frame mutable state — never triggers re-renders
   const rotationAngle = useRef(Math.PI);
   const cameraPos = useRef(new THREE.Vector3(0, 4, 8));
 
   useFrame((state, delta) => {
-    if (!bodyRef.current || !meshRef.current) return;
+    if (!bodyRef.current || !yawRef.current || !leanRef.current) return;
 
     const { forward, backward, left, right } = getKeys();
 
-    // ── 1. Steering ────────────────────────────────────────────
+    // ── 1. Steering (YAW) — quaternion only on yawRef ──────────
     let turn = 0;
     if (left) turn += 1;
     if (right) turn -= 1;
     rotationAngle.current += turn * ROTATION_SPEED * delta;
 
-    _targetQuat.setFromAxisAngle(_yAxis, rotationAngle.current);
-    meshRef.current.quaternion.slerp(_targetQuat, 0.12);
+    // Directly set quaternion on the YAW group — no euler involved here
+    yawRef.current.quaternion.setFromAxisAngle(_yAxis, rotationAngle.current);
 
-    // Lean into turns
-    meshRef.current.rotation.z = THREE.MathUtils.lerp(
-      meshRef.current.rotation.z,
-      turn * 0.2,
+    // ── 2. Lean (ROLL) — euler only on leanRef (child) ─────────
+    // This child never has its quaternion touched, so no conflict
+    leanRef.current.rotation.z = THREE.MathUtils.lerp(
+      leanRef.current.rotation.z,
+      -turn * 0.2,   // negative = lean into turn direction
       0.08
     );
 
-    // ── 2. Thrust ──────────────────────────────────────────────
+    // ── 3. Thrust ───────────────────────────────────────────────
     let thrust = 0;
     if (forward) thrust = 1;
     if (backward) thrust = -0.5;
@@ -67,15 +73,13 @@ export const CharacterController = () => {
       true
     );
 
-    // ── 3. Chase Camera ────────────────────────────────────────
+    // ── 4. Chase Camera ─────────────────────────────────────────
     const t = bodyRef.current.translation();
     _playerPos.set(t.x, t.y, t.z);
 
-    // 5 units behind, 2.5 units above — rotates with player
     _cameraOffset.set(0, 2.5, -5).applyAxisAngle(_yAxis, rotationAngle.current);
     _idealCameraPos.copy(_playerPos).add(_cameraOffset);
 
-    // Smooth lerp — absolutely no jumps or zoom-ins
     cameraPos.current.lerp(_idealCameraPos, 0.06);
     state.camera.position.copy(cameraPos.current);
 
@@ -94,8 +98,13 @@ export const CharacterController = () => {
       linearDamping={2}
     >
       <CapsuleCollider args={[0.5, 0.5]} />
-      <group ref={meshRef}>
-        <TheArchitect />
+
+      {/* Outer group: YAW only (quaternion) */}
+      <group ref={yawRef}>
+        {/* Inner group: LEAN only (euler Z) — isolated from yaw quaternion */}
+        <group ref={leanRef}>
+          <TheArchitect />
+        </group>
       </group>
     </RigidBody>
   );
