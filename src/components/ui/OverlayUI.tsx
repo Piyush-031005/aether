@@ -1,27 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useGameStore } from '../../store/useGameStore';
-
-// Mock Data for the Portfolio Content
-const PORTFOLIO_DATA: Record<string, { title: string; content: string; tech?: string[] }> = {
-  'project-1': {
-    title: 'AETHER // The Creator Protocol',
-    content: 'A AAA WebGL portfolio experience built with React Three Fiber, Rapier Physics, and Zustand. Features a fully custom Third-Person Hoverboard controller and procedural environments.',
-    tech: ['React Three Fiber', 'Rapier', 'Zustand', 'GSAP']
-  },
-  'skills-forge': {
-    title: 'Forge Nexus: Skills',
-    content: 'Mastery over the Modern Web Stack. Forging robust architectures that scale from simple landing pages to full-blown 3D immersive experiences.',
-    tech: ['React', 'TypeScript', 'Three.js', 'Node.js', 'PostgreSQL']
-  },
-  'history-vault': {
-    title: 'Memory Vault: Origin',
-    content: 'Every creator has a beginning. From writing the first console.log() to architecting biomechanical digital civilizations. The journey is continuous.',
-  },
-  'contact-core': {
-    title: 'Helios Reactor: Transmission',
-    content: 'The core is stable. Ready to transmit data. Initiate contact sequence to open a direct channel to the Architect.',
-  }
-};
+import { PORTFOLIO_DATA } from '../../data/portfolio';
 
 export const OverlayUI = () => {
   const activeInteraction = useGameStore((state) => state.activeInteraction);
@@ -41,7 +20,6 @@ export const OverlayUI = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [activeInteraction]);
 
-  // If we move away from the interaction zone, close the modal automatically
   useEffect(() => {
     if (!activeInteraction) {
       setIsOpen(false);
@@ -50,7 +28,98 @@ export const OverlayUI = () => {
 
   if (!isOpen || !activeInteraction) return null;
 
-  const data = PORTFOLIO_DATA[activeInteraction] || { title: 'Unknown Data', content: 'Corrupted data chunk.' };
+  // Render logic based on the active zone
+  const renderContent = () => {
+    switch (activeInteraction) {
+      case 'project-1':
+        return (
+          <>
+            <h2 style={{ color: '#00BCD4', textTransform: 'uppercase', letterSpacing: '3px', borderBottom: '1px solid rgba(0,188,212,0.3)', paddingBottom: '10px' }}>DATABANK: Projects</h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '25px', marginTop: '20px', maxHeight: '60vh', overflowY: 'auto', paddingRight: '10px' }}>
+              {PORTFOLIO_DATA.projects.map((proj) => (
+                <div key={proj.id} style={{ background: 'rgba(0,0,0,0.4)', padding: '20px', borderLeft: '3px solid #00BCD4' }}>
+                  <h3 style={{ margin: '0 0 10px 0', color: '#fff' }}>{proj.title}</h3>
+                  <p style={{ color: '#aaa', fontSize: '14px', lineHeight: '1.6' }}>{proj.description}</p>
+                  <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginTop: '15px' }}>
+                    {proj.techStack.map(tech => (
+                      <span key={tech} style={{ fontSize: '11px', color: '#00BCD4', background: 'rgba(0,188,212,0.1)', padding: '4px 8px', borderRadius: '4px' }}>{tech}</span>
+                    ))}
+                  </div>
+                  {proj.repo && (
+                    <a href={proj.repo} target="_blank" rel="noreferrer" style={{ display: 'inline-block', marginTop: '15px', color: '#FF5F1F', textDecoration: 'none', fontSize: '13px', textTransform: 'uppercase' }}>
+                      [ View Repository ]
+                    </a>
+                  )}
+                </div>
+              ))}
+            </div>
+          </>
+        );
+
+      case 'skills-forge':
+        return (
+          <>
+            <h2 style={{ color: '#FF5F1F', textTransform: 'uppercase', letterSpacing: '3px', borderBottom: '1px solid rgba(255,95,31,0.3)', paddingBottom: '10px' }}>FORGE: Skills & Stack</h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginTop: '20px' }}>
+              {PORTFOLIO_DATA.skills.map((category) => (
+                <div key={category.title}>
+                  <h4 style={{ color: '#fff', marginBottom: '10px', textTransform: 'uppercase', letterSpacing: '1px' }}>{category.title}</h4>
+                  <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                    {category.skills.map(skill => (
+                      <span key={skill} style={{ border: '1px solid rgba(255,95,31,0.5)', padding: '6px 12px', fontSize: '13px', color: '#FF5F1F' }}>
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
+        );
+
+      case 'history-vault':
+        return (
+          <>
+            <h2 style={{ color: '#E0E0E0', textTransform: 'uppercase', letterSpacing: '3px', borderBottom: '1px solid rgba(224,224,224,0.3)', paddingBottom: '10px' }}>VAULT: History</h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginTop: '20px', borderLeft: '1px dashed rgba(255,255,255,0.2)', paddingLeft: '20px' }}>
+              {PORTFOLIO_DATA.history.map((item, idx) => (
+                <div key={idx} style={{ position: 'relative' }}>
+                  <div style={{ position: 'absolute', left: '-25px', top: '5px', width: '10px', height: '10px', background: '#fff', borderRadius: '50%' }} />
+                  <div style={{ color: '#00BCD4', fontSize: '12px', letterSpacing: '2px', marginBottom: '5px' }}>{item.year}</div>
+                  <h3 style={{ margin: '0 0 5px 0', color: '#fff' }}>{item.role} <span style={{ color: '#666' }}>@ {item.company}</span></h3>
+                  <p style={{ color: '#aaa', fontSize: '14px', lineHeight: '1.5' }}>{item.description}</p>
+                </div>
+              ))}
+            </div>
+          </>
+        );
+
+      case 'contact-core':
+        return (
+          <>
+            <h2 style={{ color: '#00BCD4', textTransform: 'uppercase', letterSpacing: '3px', borderBottom: '1px solid rgba(0,188,212,0.3)', paddingBottom: '10px' }}>CORE: Transmission</h2>
+            <p style={{ color: '#aaa', marginTop: '20px', marginBottom: '30px' }}>Initiate contact sequence. Open channels available below.</p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+              <a href={`mailto:${PORTFOLIO_DATA.contact.email}`} style={{ color: '#fff', textDecoration: 'none', padding: '15px', background: 'rgba(0,188,212,0.1)', border: '1px solid rgba(0,188,212,0.5)', display: 'flex', justifyContent: 'space-between' }}>
+                <span>INITIATE EMAIL</span>
+                <span style={{ color: '#00BCD4' }}>{PORTFOLIO_DATA.contact.email}</span>
+              </a>
+              <a href={PORTFOLIO_DATA.contact.github} target="_blank" rel="noreferrer" style={{ color: '#fff', textDecoration: 'none', padding: '15px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.2)', display: 'flex', justifyContent: 'space-between' }}>
+                <span>ACCESS GITHUB</span>
+                <span style={{ color: '#aaa' }}>↗</span>
+              </a>
+              <a href={PORTFOLIO_DATA.contact.linkedin} target="_blank" rel="noreferrer" style={{ color: '#fff', textDecoration: 'none', padding: '15px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.2)', display: 'flex', justifyContent: 'space-between' }}>
+                <span>ACCESS LINKEDIN</span>
+                <span style={{ color: '#aaa' }}>↗</span>
+              </a>
+            </div>
+          </>
+        );
+
+      default:
+        return <div>Data Corruption Detected.</div>;
+    }
+  };
 
   return (
     <div style={{
@@ -67,55 +136,35 @@ export const OverlayUI = () => {
     }}>
       <div style={{
         background: 'rgba(10, 10, 10, 0.85)',
-        backdropFilter: 'blur(10px)',
-        border: '1px solid #00BCD4',
+        backdropFilter: 'blur(20px)',
+        border: '1px solid rgba(255, 255, 255, 0.1)',
         padding: '40px',
-        maxWidth: '600px',
+        maxWidth: '700px',
         width: '90%',
         color: '#E0E0E0',
         fontFamily: 'var(--font-mono)',
-        boxShadow: '0 0 30px rgba(0, 188, 212, 0.2)',
+        boxShadow: '0 20px 50px rgba(0,0,0,0.5)',
         pointerEvents: 'auto'
       }}>
-        <h2 style={{ color: '#FF5F1F', marginTop: 0, textTransform: 'uppercase', letterSpacing: '2px' }}>
-          {data.title}
-        </h2>
         
-        <p style={{ lineHeight: '1.6', fontSize: '16px' }}>
-          {data.content}
-        </p>
-
-        {data.tech && (
-          <div style={{ marginTop: '20px', display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-            {data.tech.map((t) => (
-              <span key={t} style={{
-                background: 'rgba(0, 188, 212, 0.1)',
-                border: '1px solid rgba(0, 188, 212, 0.5)',
-                padding: '4px 8px',
-                fontSize: '12px',
-                color: '#00BCD4'
-              }}>
-                {t}
-              </span>
-            ))}
-          </div>
-        )}
+        {renderContent()}
 
         <button 
           onClick={() => setIsOpen(false)}
           style={{
-            marginTop: '30px',
+            marginTop: '40px',
             background: 'transparent',
-            border: '1px solid #FF5F1F',
-            color: '#FF5F1F',
-            padding: '10px 20px',
+            border: 'none',
+            color: '#666',
             cursor: 'pointer',
             fontFamily: 'var(--font-mono)',
             textTransform: 'uppercase',
-            transition: 'all 0.2s'
+            fontSize: '12px',
+            letterSpacing: '2px',
+            transition: 'color 0.2s'
           }}
-          onMouseOver={(e) => e.currentTarget.style.background = 'rgba(255, 95, 31, 0.1)'}
-          onMouseOut={(e) => e.currentTarget.style.background = 'transparent'}
+          onMouseOver={(e) => e.currentTarget.style.color = '#fff'}
+          onMouseOut={(e) => e.currentTarget.style.color = '#666'}
         >
           [ESC] Close Protocol
         </button>

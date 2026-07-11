@@ -2,7 +2,7 @@ import React, { Suspense, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { Preload, KeyboardControls } from '@react-three/drei';
 import { Physics } from '@react-three/rapier';
-import { EffectComposer, Bloom, ChromaticAberration, Noise } from '@react-three/postprocessing';
+import { EffectComposer, Bloom, ChromaticAberration, Noise, SMAA } from '@react-three/postprocessing';
 import { BlendFunction } from 'postprocessing';
 import * as THREE from 'three';
 
@@ -27,10 +27,9 @@ function App() {
     setPhase('void');
     audioSystem.startHeartbeat();
     
-    // Simulate transitioning from Void to the actual world after 4 seconds
+    // Simulate transitioning from Void to the actual world after 6 seconds
     setTimeout(() => {
       setPhase('world');
-      // In a real app we'd crossfade audio, but for now we'll just stop the heartbeat
       audioSystem.stopHeartbeat();
     }, 6000);
   };
@@ -40,7 +39,7 @@ function App() {
       {/* 3D Canvas Layer */}
       <div className="canvas-container">
         <KeyboardControls map={keyboardMap}>
-          <Canvas shadows camera={{ position: [0, 2, 5], fov: 50 }}>
+          <Canvas dpr={[1, 2]} shadows camera={{ position: [0, 2, 5], fov: 50 }} gl={{ antialias: false }}>
             <Suspense fallback={null}>
               
               {phase === 'void' && <TheVoid />}
@@ -52,7 +51,8 @@ function App() {
               )}
               
               {/* God-Tier AAA Post-Processing */}
-              <EffectComposer disableNormalPass>
+              <EffectComposer disableNormalPass multisampling={0}>
+                <SMAA />
                 <Bloom 
                   luminanceThreshold={0.5} 
                   mipmapBlur 
