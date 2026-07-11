@@ -1,9 +1,11 @@
 import React from 'react';
 import { RigidBody } from '@react-three/rapier';
+import { RobotBird } from '../../components/3d/RobotBird';
 
 export const SkyFoundry = () => {
   return (
     <group position={[0, 0, 0]}>
+      <RobotBird />
       <RigidBody type="fixed" colliders="cuboid" position={[0, -0.5, 0]}>
         <mesh receiveShadow>
           <boxGeometry args={[30, 1, 30]} />
