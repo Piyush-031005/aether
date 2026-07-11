@@ -1,5 +1,6 @@
 import React from 'react';
 import { RigidBody } from '@react-three/rapier';
+import { InteractionZone } from '../../components/3d/InteractionZone';
 
 export const ForgeNexus = () => {
   return (
@@ -17,6 +18,9 @@ export const ForgeNexus = () => {
         <meshStandardMaterial color="#FF5F1F" wireframe />
       </mesh>
       
+      {/* Interaction Zone for Skills */}
+      <InteractionZone id="skills-forge" position={[0, 0, 6]} radius={4} label="FORGE SKILLS" />
+
       <RigidBody type="fixed" colliders="cuboid" position={[20, -0.6, 0]}>
         <mesh receiveShadow>
           <boxGeometry args={[10, 1, 4]} />

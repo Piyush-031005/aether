@@ -1,30 +1,39 @@
 import React from 'react';
 import { RigidBody } from '@react-three/rapier';
+import { InteractionZone } from '../../components/3d/InteractionZone';
 
 export const MemoryVault = () => {
   return (
     <group position={[50, 0, 0]}>
       <RigidBody type="fixed" colliders="cuboid" position={[0, -0.5, 0]}>
         <mesh receiveShadow>
-          <boxGeometry args={[30, 1, 50]} />
-          <meshStandardMaterial color="#111" metalness={0.3} roughness={0.7} />
+          <boxGeometry args={[45, 1, 45]} />
+          <meshStandardMaterial color="#000510" metalness={0.9} roughness={0.1} />
         </mesh>
       </RigidBody>
       
-      {/* Abstract Memory Monoliths */}
-      {[-10, 0, 10].map((z, i) => (
-        <RigidBody key={i} type="fixed" colliders="cuboid" position={[0, 5, z]}>
-          <mesh castShadow receiveShadow>
-            <boxGeometry args={[2, 10, 4]} />
-            <meshStandardMaterial color="#E0E0E0" emissive="#00BCD4" emissiveIntensity={0.1} />
-          </mesh>
-        </RigidBody>
-      ))}
+      {/* Monoliths */}
+      <RigidBody type="fixed" position={[-10, 5, -10]}>
+        <mesh castShadow receiveShadow>
+          <boxGeometry args={[4, 10, 4]} />
+          <meshStandardMaterial color="#222" emissive="#00BCD4" emissiveIntensity={0.2} />
+        </mesh>
+      </RigidBody>
+      
+      <RigidBody type="fixed" position={[10, 7, 5]}>
+        <mesh castShadow receiveShadow>
+          <boxGeometry args={[6, 14, 6]} />
+          <meshStandardMaterial color="#111" emissive="#00BCD4" emissiveIntensity={0.1} />
+        </mesh>
+      </RigidBody>
+      
+      {/* Interaction Zone for History */}
+      <InteractionZone id="history-vault" position={[0, 0, 0]} radius={5} label="READ TIMELINE" />
 
-      <RigidBody type="fixed" colliders="cuboid" position={[-17.5, -0.6, 0]}>
+      <RigidBody type="fixed" colliders="cuboid" position={[-25, -0.6, 0]}>
         <mesh receiveShadow>
           <boxGeometry args={[10, 1, 4]} />
-          <meshStandardMaterial color="#E0E0E0" metalness={0.5} />
+          <meshStandardMaterial color="#00BCD4" metalness={0.5} />
         </mesh>
       </RigidBody>
     </group>

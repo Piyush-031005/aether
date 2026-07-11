@@ -47,8 +47,11 @@ export const TheArchitect = () => {
         {/* Edge Highlights */}
         <mesh position={[0, -0.1, 0]}>
           <boxGeometry args={[0.62, 0.08, 1.82]} />
-          <meshStandardMaterial color="#00BCD4" emissive="#00BCD4" emissiveIntensity={0.5} wireframe />
+          <meshStandardMaterial color="#00BCD4" emissive="#00BCD4" emissiveIntensity={0.8} wireframe />
         </mesh>
+
+        {/* Underglow so the board is visible in the dark */}
+        <pointLight color="#00BCD4" position={[0, -0.5, 0]} intensity={1} distance={3} decay={2} />
 
         {/* Engine Core (Rear) */}
         <mesh position={[0, -0.1, -0.8]}>

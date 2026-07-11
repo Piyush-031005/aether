@@ -5,11 +5,13 @@ interface GameState {
   hasVisitedBefore: boolean;
   unlockedDistricts: string[];
   currentZone: string;
+  activeInteraction: string | null;
   
   // Actions
   markVisited: () => void;
   unlockDistrict: (districtId: string) => void;
   setCurrentZone: (zoneId: string) => void;
+  setActiveInteraction: (interactionId: string | null) => void;
 }
 
 export const useGameStore = create<GameState>()(
@@ -18,6 +20,7 @@ export const useGameStore = create<GameState>()(
       hasVisitedBefore: false,
       unlockedDistricts: ['SkyFoundry'], // Spawn is always unlocked
       currentZone: 'SkyFoundry',
+      activeInteraction: null,
       
       markVisited: () => set({ hasVisitedBefore: true }),
       
@@ -28,6 +31,7 @@ export const useGameStore = create<GameState>()(
       })),
       
       setCurrentZone: (zoneId) => set({ currentZone: zoneId }),
+      setActiveInteraction: (interactionId) => set({ activeInteraction: interactionId }),
     }),
     {
       name: 'aether-creator-protocol', // The key in localStorage

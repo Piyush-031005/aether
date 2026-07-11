@@ -9,6 +9,7 @@ import * as THREE from 'three';
 import { TheVoid } from './world/TheVoid';
 import { World } from './world/World';
 import { audioSystem } from './systems/AudioSystem';
+import { OverlayUI } from './components/ui/OverlayUI';
 
 // Key bindings map for the character controller
 const keyboardMap = [
@@ -146,10 +147,14 @@ function App() {
             gap: '8px'
           }}>
             <div><span style={{ color: 'var(--color-primary)' }}>[W,A,S,D]</span> MOVE</div>
+            <div><span style={{ color: 'var(--color-accent)' }}>[E]</span> INTERACT</div>
             <div><span style={{ color: 'var(--color-accent)' }}>ZONE:</span> PROTOTYPE VALLEY</div>
           </div>
         )}
       </div>
+
+      {/* 2D HTML Overlays */}
+      <OverlayUI />
     </>
   );
 }

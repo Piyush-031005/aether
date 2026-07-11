@@ -1,6 +1,7 @@
 import React from 'react';
 import { RigidBody } from '@react-three/rapier';
 import { BioTree } from '../../components/3d/BioTree';
+import { InteractionZone } from '../../components/3d/InteractionZone';
 
 export const VerdantCircuit = () => {
   return (
@@ -19,6 +20,9 @@ export const VerdantCircuit = () => {
       <BioTree position={[-15, 0, 5]} />
       <BioTree position={[10, 0, 10]} />
       
+      {/* Interaction Zone for Projects */}
+      <InteractionZone id="project-1" position={[-5, 0, -2]} radius={3} label="ACCESS DATABANK" />
+
       {/* Pathway from Spawn */}
       <RigidBody type="fixed" colliders="cuboid" position={[0, -0.6, 25]}>
         <mesh receiveShadow>
