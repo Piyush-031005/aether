@@ -4,6 +4,7 @@ import { useKeyboardControls } from '@react-three/drei';
 import { RigidBody, CapsuleCollider, RapierRigidBody } from '@react-three/rapier';
 import * as THREE from 'three';
 import { TheArchitect } from '../components/3d/TheArchitect';
+import { audioSystem } from '../systems/AudioSystem';
 
 const SPEED = 25;
 const ROTATION_SPEED = 3;
@@ -72,6 +73,11 @@ export const CharacterController = () => {
       },
       true
     );
+
+    // Update engine pitch based on actual velocity
+    const currentSpeed = Math.sqrt(vel.x * vel.x + vel.z * vel.z);
+    const speedRatio = Math.min(currentSpeed / SPEED, 1);
+    audioSystem.setEngineSpeed(speedRatio);
 
     // ── 4. Chase Camera ─────────────────────────────────────────
     const t = bodyRef.current.translation();

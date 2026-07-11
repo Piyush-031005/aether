@@ -31,6 +31,10 @@ function App() {
     setTimeout(() => {
       setPhase('world');
       audioSystem.stopHeartbeat();
+      
+      // Start the immersive world audio
+      audioSystem.startWorldAmbience();
+      audioSystem.startEngine();
     }, 6000);
   };
 

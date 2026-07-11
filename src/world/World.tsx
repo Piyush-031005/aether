@@ -8,6 +8,7 @@ import { ForgeNexus } from './districts/ForgeNexus';
 import { MemoryVault } from './districts/MemoryVault';
 import { HeliosReactor } from './districts/HeliosReactor';
 import { EnergyGrid } from './EnergyGrid';
+import { DataMonoliths } from './DataMonoliths';
 
 export const World = () => {
   return (
@@ -26,6 +27,9 @@ export const World = () => {
 
       {/* The Unified Cyber-Grid Floor */}
       <EnergyGrid />
+      
+      {/* Procedural World Population */}
+      <DataMonoliths />
       
       <SkyFoundry />        {/* Spawn: [0, 0, 0] */}
       <VerdantCircuit />    {/* Projects: [0, 0, -50] */}
