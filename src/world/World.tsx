@@ -9,6 +9,7 @@ import { MemoryVault } from './districts/MemoryVault';
 import { HeliosReactor } from './districts/HeliosReactor';
 import { EnergyGrid } from './EnergyGrid';
 import { DataMonoliths } from './DataMonoliths';
+import { OnePieceEasterEgg } from '../components/3d/OnePieceEasterEgg';
 
 export const World = () => {
   return (
@@ -36,6 +37,9 @@ export const World = () => {
       <ForgeNexus />        {/* Skills: [-50, 0, 0] */}
       <MemoryVault />       {/* History: [50, 0, 0] */}
       <HeliosReactor />     {/* Contact: [0, 0, 50] */}
+
+      {/* The Hidden Easter Egg */}
+      <OnePieceEasterEgg />
 
       {/* Player Character */}
       <CharacterController />

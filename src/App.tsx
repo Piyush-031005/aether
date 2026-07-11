@@ -55,7 +55,7 @@ function App() {
               )}
               
               {/* God-Tier AAA Post-Processing */}
-              <EffectComposer disableNormalPass multisampling={0}>
+              <EffectComposer multisampling={0}>
                 <SMAA />
                 <Bloom 
                   luminanceThreshold={0.5} 

@@ -22,10 +22,9 @@ export const TheArchitectReveal = () => {
       if ((child as THREE.Mesh).isMesh) {
         const mesh = child as THREE.Mesh;
         if (mesh.material) {
-          // @ts-ignore
-          mesh.material = mesh.material.clone();
-          mesh.material.transparent = true;
-          mesh.material.opacity = 0;
+          const mat = mesh.material as THREE.Material;
+          mat.transparent = true;
+          mat.opacity = 0;
         }
       }
     });

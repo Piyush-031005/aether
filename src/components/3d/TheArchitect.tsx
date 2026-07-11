@@ -54,8 +54,8 @@ export const TheArchitect = () => {
         <pointLight color="#00BCD4" position={[0, -0.5, 0]} intensity={1} distance={3} decay={2} />
 
         {/* Engine Core (Rear) */}
-        <mesh position={[0, -0.1, -0.8]}>
-          <cylinderGeometry args={[0.15, 0.15, 0.2, 16]} rotation={[Math.PI / 2, 0, 0]} />
+        <mesh position={[0, -0.1, -0.8]} rotation={[Math.PI / 2, 0, 0]}>
+          <cylinderGeometry args={[0.15, 0.15, 0.2, 16]} />
           <meshStandardMaterial color="#FF5F1F" emissive="#FF5F1F" emissiveIntensity={2} />
         </mesh>
 

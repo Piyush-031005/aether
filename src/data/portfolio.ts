@@ -89,5 +89,11 @@ export const PORTFOLIO_DATA = {
     github: 'https://github.com/Piyush-031005',
     linkedin: 'https://linkedin.com/in/piyush-punera',
     twitter: 'https://twitter.com/piyush'
-  } as ContactInfo
+  } as ContactInfo,
+
+  secret: {
+    title: 'THE RIO PONEGLYPH',
+    message: 'The Architect left this world behind to search for the One Piece. The true history of the Void Century is hidden within the source code. Inherit my will.',
+    author: 'Joy Boy'
+  }
 };

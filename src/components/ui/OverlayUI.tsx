@@ -116,6 +116,21 @@ export const OverlayUI = () => {
           </>
         );
 
+      case 'secret-poneglyph':
+        return (
+          <>
+            <h2 style={{ color: '#FF003C', textTransform: 'uppercase', letterSpacing: '5px', borderBottom: '1px solid rgba(255,0,60,0.3)', paddingBottom: '10px', textAlign: 'center' }}>{PORTFOLIO_DATA.secret.title}</h2>
+            <div style={{ padding: '30px', border: '1px solid #FF003C', background: 'rgba(255,0,60,0.05)', marginTop: '20px' }}>
+              <p style={{ color: '#fff', fontSize: '18px', lineHeight: '1.8', fontStyle: 'italic', textAlign: 'center' }}>
+                "{PORTFOLIO_DATA.secret.message}"
+              </p>
+              <p style={{ color: '#FF003C', textAlign: 'right', marginTop: '20px', letterSpacing: '2px' }}>
+                — {PORTFOLIO_DATA.secret.author}
+              </p>
+            </div>
+          </>
+        );
+
       default:
         return <div>Data Corruption Detected.</div>;
     }
