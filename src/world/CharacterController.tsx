@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { useKeyboardControls } from '@react-three/drei';
 import { RigidBody, CapsuleCollider, RapierRigidBody } from '@react-three/rapier';
@@ -8,88 +8,92 @@ import { TheArchitect } from '../components/3d/TheArchitect';
 const SPEED = 8;
 const ROTATION_SPEED = 2;
 
+// All vectors created ONCE at module level — never re-allocated per frame
+const _moveDir = new THREE.Vector3();
+const _cameraOffset = new THREE.Vector3();
+const _idealCameraPos = new THREE.Vector3();
+const _playerPos = new THREE.Vector3();
+const _cameraTarget = new THREE.Vector3();
+const _targetQuat = new THREE.Quaternion();
+const _yAxis = new THREE.Vector3(0, 1, 0);
+
 export const CharacterController = () => {
-  const ref = useRef<RapierRigidBody>(null);
+  const bodyRef = useRef<RapierRigidBody>(null);
   const meshRef = useRef<THREE.Group>(null);
   const [, getKeys] = useKeyboardControls();
-  
-  // Track rotation state
-  const [rotationAngle, setRotationAngle] = useState(Math.PI); // Start facing away from camera
 
-  // Camera tracking target
-  const cameraTarget = new THREE.Vector3();
-  const cameraPosition = new THREE.Vector3();
+  // useRef for per-frame mutable values — NEVER triggers React re-renders
+  const rotationAngle = useRef(Math.PI);
+  const cameraPos = useRef(new THREE.Vector3(0, 4, 8));
 
   useFrame((state, delta) => {
+    if (!bodyRef.current || !meshRef.current) return;
+
     const { forward, backward, left, right } = getKeys();
-    
-    if (ref.current && meshRef.current) {
-      // 1. Handle Rotation (Steering the hoverboard)
-      let turn = 0;
-      if (left) turn += 1;
-      if (right) turn -= 1;
-      
-      const newRotation = rotationAngle + (turn * ROTATION_SPEED * delta);
-      setRotationAngle(newRotation);
 
-      // Smoothly rotate the visual mesh to match the calculated rotation
-      const targetQuaternion = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), newRotation);
-      meshRef.current.quaternion.slerp(targetQuaternion, 0.1);
+    // ── 1. Steering ────────────────────────────────────────────
+    let turn = 0;
+    if (left) turn += 1;
+    if (right) turn -= 1;
+    rotationAngle.current += turn * ROTATION_SPEED * delta;
 
-      // Simulate leaning when turning
-      const leanAngle = turn * 0.3; // Lean left/right based on turn
-      meshRef.current.rotation.z = THREE.MathUtils.lerp(meshRef.current.rotation.z, leanAngle, 0.1);
+    _targetQuat.setFromAxisAngle(_yAxis, rotationAngle.current);
+    meshRef.current.quaternion.slerp(_targetQuat, 0.12);
 
-      // 2. Handle Movement (Thrust)
-      let thrust = 0;
-      if (forward) thrust += 1;
-      if (backward) thrust -= 0.5; // Reverse is slower
+    // Lean into turns
+    meshRef.current.rotation.z = THREE.MathUtils.lerp(
+      meshRef.current.rotation.z,
+      turn * 0.2,
+      0.08
+    );
 
-      // Calculate forward vector based on current rotation
-      const moveDir = new THREE.Vector3(0, 0, 1).applyAxisAngle(new THREE.Vector3(0, 1, 0), newRotation);
-      moveDir.multiplyScalar(thrust * SPEED);
+    // ── 2. Thrust ──────────────────────────────────────────────
+    let thrust = 0;
+    if (forward) thrust = 1;
+    if (backward) thrust = -0.5;
 
-      // Apply linear velocity (keep y velocity for gravity/falling)
-      const currentVel = ref.current.linvel();
-      
-      // Smoothly interpolate velocity for a glide/hover effect
-      const targetVel = new THREE.Vector3(moveDir.x, currentVel.y, moveDir.z);
-      const glideVel = new THREE.Vector3(currentVel.x, currentVel.y, currentVel.z).lerp(targetVel, 0.05);
+    _moveDir
+      .set(0, 0, 1)
+      .applyAxisAngle(_yAxis, rotationAngle.current)
+      .multiplyScalar(thrust * SPEED);
 
-      ref.current.setLinvel(glideVel, true);
+    const vel = bodyRef.current.linvel();
+    bodyRef.current.setLinvel(
+      {
+        x: THREE.MathUtils.lerp(vel.x, _moveDir.x, 0.06),
+        y: vel.y,
+        z: THREE.MathUtils.lerp(vel.z, _moveDir.z, 0.06),
+      },
+      true
+    );
 
-      // 3. Third-Person Chase Camera
-      const playerPos = ref.current.translation();
-      
-      // Calculate desired camera position (behind and slightly above the player)
-      const cameraOffset = new THREE.Vector3(0, 2, -6);
-      cameraOffset.applyAxisAngle(new THREE.Vector3(0, 1, 0), newRotation); // Rotate offset to match player
-      
-      const idealCameraPos = new THREE.Vector3(playerPos.x, playerPos.y, playerPos.z).add(cameraOffset);
-      
-      // Smoothly move camera
-      cameraPosition.lerp(idealCameraPos, 0.05);
-      state.camera.position.copy(cameraPosition);
+    // ── 3. Chase Camera ────────────────────────────────────────
+    const t = bodyRef.current.translation();
+    _playerPos.set(t.x, t.y, t.z);
 
-      // Make camera look at a point slightly above the player
-      cameraTarget.set(playerPos.x, playerPos.y + 1, playerPos.z);
-      state.camera.lookAt(cameraTarget);
-    }
+    // 5 units behind, 2.5 units above — rotates with player
+    _cameraOffset.set(0, 2.5, -5).applyAxisAngle(_yAxis, rotationAngle.current);
+    _idealCameraPos.copy(_playerPos).add(_cameraOffset);
+
+    // Smooth lerp — absolutely no jumps or zoom-ins
+    cameraPos.current.lerp(_idealCameraPos, 0.06);
+    state.camera.position.copy(cameraPos.current);
+
+    _cameraTarget.set(t.x, t.y + 1.2, t.z);
+    state.camera.lookAt(_cameraTarget);
   });
 
   return (
-    <RigidBody 
-      ref={ref} 
-      colliders={false} 
-      mass={1} 
-      type="dynamic" 
-      position={[0, 2, 0]} 
-      enabledRotations={[false, false, false]} // Keep the physical body upright, visual mesh handles leaning
-      linearDamping={1} // Adds "air resistance" to the hoverboard
+    <RigidBody
+      ref={bodyRef}
+      colliders={false}
+      mass={1}
+      type="dynamic"
+      position={[0, 2, 0]}
+      enabledRotations={[false, false, false]}
+      linearDamping={2}
     >
       <CapsuleCollider args={[0.5, 0.5]} />
-      
-      {/* The Visual Container that rotates and leans */}
       <group ref={meshRef}>
         <TheArchitect />
       </group>

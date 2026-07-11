@@ -27,12 +27,12 @@ export const TheArchitect = () => {
 
   return (
     <group position={[0, -0.5, 0]}>
-      {/* The Character Model */}
+      {/* The Character Model — upright, no tilt */}
       <primitive 
         object={scene} 
-        scale={1} 
-        position={[0, 0, 0]} 
-        rotation={[0, Math.PI, 0]} // Face forward
+        scale={1}
+        position={[0, 0, 0]}
+        rotation={[0, 0, 0]}
         castShadow 
       />
 
