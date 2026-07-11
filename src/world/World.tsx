@@ -12,12 +12,12 @@ export const World = () => {
   return (
     <>
       {/* Atmosphere & Lighting */}
-      <Sky distance={450000} sunPosition={[0, 1, 0]} inclination={0} azimuth={0.25} />
+      <color attach="background" args={['#050505']} />
       <Stars radius={150} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
-      <fog attach="fog" args={['#0A0A0A', 15, 80]} />
+      <fog attach="fog" args={['#050505', 10, 60]} />
       
-      <ambientLight intensity={0.4} />
-      <directionalLight position={[20, 30, 20]} intensity={1.5} color="#FF5F1F" castShadow />
+      <ambientLight intensity={0.2} />
+      <directionalLight position={[20, 30, 20]} intensity={2} color="#FF5F1F" castShadow />
 
       {/* The 5 Core Districts */}
       <SkyFoundry />        {/* Spawn: [0, 0, 0] */}

@@ -50,12 +50,6 @@ export const CharacterController = () => {
       enabledRotations={[false, false, false]}
     >
       <CapsuleCollider args={[0.5, 0.5]} />
-      
-      {/* Invisible mesh for debugging / visual reference for now */}
-      <mesh castShadow>
-        <capsuleGeometry args={[0.5, 1, 4]} />
-        <meshStandardMaterial color="#E0E0E0" wireframe />
-      </mesh>
     </RigidBody>
   );
 };
