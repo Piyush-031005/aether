@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { RigidBody } from '@react-three/rapier';
+import { RigidBody, CylinderCollider } from '@react-three/rapier';
 import { Html } from '@react-three/drei';
 import { useGameStore } from '../../store/useGameStore';
 
@@ -33,7 +33,7 @@ export const InteractionZone: React.FC<InteractionZoneProps> = ({ id, position, 
         onIntersectionEnter={handleEnter} 
         onIntersectionExit={handleExit}
       >
-        <cylinderCollider args={[2, radius]} />
+        <CylinderCollider args={[2, radius]} />
       </RigidBody>
 
       {/* Holographic Prompt */}
