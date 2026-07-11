@@ -1,25 +1,33 @@
-import React from 'react';
-import { RigidBody } from '@react-three/rapier';
+import React, { useRef } from 'react';
+import { useFrame } from '@react-three/fiber';
 import { RobotBird } from '../../components/3d/RobotBird';
+import * as THREE from 'three';
 
 export const SkyFoundry = () => {
+  const ringRef = useRef<THREE.Mesh>(null);
+
+  useFrame((state) => {
+    if (ringRef.current) {
+      ringRef.current.rotation.y = state.clock.elapsedTime * 0.2;
+    }
+  });
+
   return (
     <group position={[0, 0, 0]}>
-      <RobotBird />
-      <RigidBody type="fixed" colliders="cuboid" position={[0, -0.5, 0]}>
-        <mesh receiveShadow>
-          <boxGeometry args={[30, 1, 30]} />
-          <meshStandardMaterial color="#0A0A0A" metalness={0.5} roughness={0.5} />
-        </mesh>
-      </RigidBody>
-      
-      {/* Spawn Ring */}
-      <mesh position={[0, 0.1, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-        <ringGeometry args={[2, 2.2, 32]} />
-        <meshBasicMaterial color="#FF5F1F" />
+      {/* Animated Teleportation Ring */}
+      <mesh ref={ringRef} position={[0, 0.2, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+        <torusGeometry args={[10, 0.5, 16, 100]} />
+        <meshStandardMaterial color="#FF5F1F" emissive="#FF5F1F" emissiveIntensity={1.5} wireframe />
       </mesh>
-      
-      <gridHelper args={[30, 30, '#00BCD4', '#0A0A0A']} position={[0, 0.01, 0]} />
+
+      {/* Inner Spawn Circle */}
+      <mesh position={[0, 0.1, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+        <circleGeometry args={[10, 64]} />
+        <meshBasicMaterial color="#000" opacity={0.8} transparent />
+      </mesh>
+
+      {/* NPC */}
+      <RobotBird />
     </group>
   );
 };
