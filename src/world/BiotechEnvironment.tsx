@@ -2,6 +2,7 @@ import React, { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { BioTree } from '../components/3d/BioTree';
+import { CyberRain } from './CyberRain';
 
 // Custom Water Shader Material
 const WaterMaterial = () => {
@@ -103,10 +104,19 @@ export const BiotechEnvironment = () => {
 
   return (
     <group>
+      {/* Dynamic Cyber-Rain Weather */}
+      <CyberRain />
+
       {/* Massive Cyber-Ocean (North Side) */}
       <mesh position={[0, -0.5, -50]} rotation={[-Math.PI / 2, 0, 0]}>
         <planeGeometry args={[200, 100, 128, 64]} />
         <WaterMaterial />
+      </mesh>
+
+      {/* Glowing Shoreline Transition (At Z=0 where Ocean meets Sand) */}
+      <mesh position={[0, -0.15, 0]}>
+        <boxGeometry args={[200, 0.5, 2]} />
+        <meshStandardMaterial color="#00BCD4" emissive="#00BCD4" emissiveIntensity={2} transparent opacity={0.8} />
       </mesh>
 
       {/* Sand Dunes (South Side / Central Landmass) */}

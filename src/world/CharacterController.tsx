@@ -4,6 +4,7 @@ import { useKeyboardControls } from '@react-three/drei';
 import { RigidBody, CapsuleCollider, RapierRigidBody } from '@react-three/rapier';
 import * as THREE from 'three';
 import { TheArchitect } from '../components/3d/TheArchitect';
+import { FloatingAI } from '../components/3d/FloatingAI';
 import { audioSystem } from '../systems/AudioSystem';
 
 import { useJoystickStore } from '../store/useJoystickStore';
@@ -131,6 +132,9 @@ export const CharacterController = () => {
         {/* Inner group: LEAN only (euler Z) — isolated from yaw quaternion */}
         <group ref={leanRef}>
           <TheArchitect />
+          <group position={[0.8, 1, 0.8]}>
+            <FloatingAI />
+          </group>
         </group>
       </group>
     </RigidBody>

@@ -77,19 +77,36 @@ export const OverlayUI = () => {
           </>
         );
 
-      case 'history-vault':
+      case 'about-vault':
         return (
           <>
-            <h2 style={{ color: '#E0E0E0', textTransform: 'uppercase', letterSpacing: '3px', borderBottom: '1px solid rgba(224,224,224,0.3)', paddingBottom: '10px' }}>VAULT: History</h2>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginTop: '20px', borderLeft: '1px dashed rgba(255,255,255,0.2)', paddingLeft: '20px' }}>
-              {PORTFOLIO_DATA.history.map((item, idx) => (
-                <div key={idx} style={{ position: 'relative' }}>
-                  <div style={{ position: 'absolute', left: '-25px', top: '5px', width: '10px', height: '10px', background: '#fff', borderRadius: '50%' }} />
-                  <div style={{ color: '#00BCD4', fontSize: '12px', letterSpacing: '2px', marginBottom: '5px' }}>{item.year}</div>
-                  <h3 style={{ margin: '0 0 5px 0', color: '#fff' }}>{item.role} <span style={{ color: '#666' }}>@ {item.company}</span></h3>
-                  <p style={{ color: '#aaa', fontSize: '14px', lineHeight: '1.5' }}>{item.description}</p>
-                </div>
-              ))}
+            <h2 style={{ color: '#E0E0E0', textTransform: 'uppercase', letterSpacing: '3px', borderBottom: '1px solid rgba(224,224,224,0.3)', paddingBottom: '10px' }}>DATABANKS: About & Timeline</h2>
+            
+            <div style={{ maxHeight: '60vh', overflowY: 'auto', paddingRight: '10px', marginTop: '20px' }}>
+              <h3 style={{ color: '#00BCD4', marginBottom: '10px', letterSpacing: '2px' }}>// BIOGRAPHY</h3>
+              <p style={{ color: '#aaa', fontSize: '15px', lineHeight: '1.7', marginBottom: '30px' }}>{PORTFOLIO_DATA.about}</p>
+              
+              <h3 style={{ color: '#00BCD4', marginBottom: '10px', letterSpacing: '2px' }}>// ACHIEVEMENTS</h3>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '15px', marginBottom: '30px' }}>
+                {PORTFOLIO_DATA.achievements.map((ach, idx) => (
+                  <div key={idx} style={{ background: 'rgba(0,188,212,0.1)', padding: '15px', border: '1px solid rgba(0,188,212,0.3)' }}>
+                    <h4 style={{ color: '#fff', margin: '0 0 5px 0' }}>{ach.title}</h4>
+                    <p style={{ color: '#aaa', fontSize: '12px', margin: 0 }}>{ach.description}</p>
+                  </div>
+                ))}
+              </div>
+
+              <h3 style={{ color: '#00BCD4', marginBottom: '10px', letterSpacing: '2px' }}>// TIMELINE</h3>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', borderLeft: '1px dashed rgba(255,255,255,0.2)', paddingLeft: '20px' }}>
+                {PORTFOLIO_DATA.history.map((item, idx) => (
+                  <div key={idx} style={{ position: 'relative' }}>
+                    <div style={{ position: 'absolute', left: '-25px', top: '5px', width: '10px', height: '10px', background: '#fff', borderRadius: '50%' }} />
+                    <div style={{ color: '#00BCD4', fontSize: '12px', letterSpacing: '2px', marginBottom: '5px' }}>{item.year}</div>
+                    <h4 style={{ margin: '0 0 5px 0', color: '#fff' }}>{item.role} <span style={{ color: '#666' }}>@ {item.company}</span></h4>
+                    <p style={{ color: '#aaa', fontSize: '14px', lineHeight: '1.5', margin: 0 }}>{item.description}</p>
+                  </div>
+                ))}
+              </div>
             </div>
           </>
         );

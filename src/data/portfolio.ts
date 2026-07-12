@@ -19,6 +19,11 @@ export type HistoryItem = {
   description: string;
 };
 
+export type Achievement = {
+  title: string;
+  description: string;
+};
+
 export type ContactInfo = {
   email: string;
   github: string;
@@ -32,6 +37,12 @@ export type ContactInfo = {
 // ------------------------------------------------------------------
 
 export const PORTFOLIO_DATA = {
+  about: "I am a Creative Technologist specializing in pushing the limits of the browser. My work bridges the gap between high-performance engineering and cinematic 3D art, creating immersive WebGL experiences that challenge traditional web design.",
+  achievements: [
+    { title: "Hackathon Winner", description: "First place in the global WebGL rendering challenge." },
+    { title: "Awwwards Site of the Day", description: "Recognized for creative excellence in frontend architecture." },
+    { title: "Open Source Contributor", description: "Active contributor to the React Three Fiber ecosystem." }
+  ] as Achievement[],
   projects: [
     {
       id: 'aether',

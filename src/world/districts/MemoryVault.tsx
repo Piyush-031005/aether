@@ -39,8 +39,8 @@ export const MemoryVault = () => {
         </mesh>
       </group>
       
-      {/* Interaction Zone for History */}
-      <InteractionZone id="history-vault" position={[0, 1, 0]} radius={5} label="READ TIMELINE" />
+      {/* Interaction Zone for About Me & History */}
+      <InteractionZone id="about-vault" position={[0, 1, 0]} radius={5} label="ACCESS DATABANKS" />
     </group>
   );
 };
