@@ -36,9 +36,10 @@ const Poneglyph = ({ project, position, rotation }: { project: any, position: [n
           {/* Massive Cube */}
           <boxGeometry args={[4, 4, 4]} />
           <meshStandardMaterial 
-            color="#111" 
-            roughness={0.9} 
-            metalness={0.1}
+            color="#1a1a24" 
+            roughness={0.3} // Shiny but brushed
+            metalness={0.9} // Highly metallic (Titanium)
+            envMapIntensity={2.0} // React strongly to the HDRI
           />
           
           {/* Wireframe overlay to look ancient/digital */}

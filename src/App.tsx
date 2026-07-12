@@ -61,7 +61,18 @@ function App() {
       {/* 3D Canvas Layer */}
       <div className="canvas-container">
         <KeyboardControls map={keyboardMap}>
-          <Canvas dpr={[1.5, 2]} shadows camera={{ position: [0, 2, 5], fov: 50 }} gl={{ antialias: true, powerPreference: "high-performance" }}>
+          <Canvas 
+            dpr={[1, 2]} // Don't push 1.5 minimum on all screens, respect native dpr for crispness
+            shadows 
+            camera={{ position: [0, 2, 5], fov: 50 }} 
+            gl={{ 
+              antialias: true, 
+              powerPreference: "high-performance",
+              toneMapping: THREE.ACESFilmicToneMapping, // ACES Tone Mapping
+              toneMappingExposure: 1.0, // Proper exposure
+              outputColorSpace: THREE.SRGBColorSpace 
+            }}
+          >
             <Suspense fallback={null}>
               
               {phase === 'void' && <TheVoid />}
@@ -78,13 +89,14 @@ function App() {
                   <>
                     <SMAA />
                     <Bloom 
-                      luminanceThreshold={0.5} 
+                      luminanceThreshold={0.9} // Higher threshold so only extremely bright things glow (prevents 480p blur)
+                      luminanceSmoothing={0.025}
                       mipmapBlur 
-                      intensity={1.2} 
+                      intensity={0.4} // Dramatically reduced bloom intensity
                     />
                     <ChromaticAberration 
                       blendFunction={BlendFunction.NORMAL} 
-                      offset={new THREE.Vector2(0.001, 0.001)} 
+                      offset={new THREE.Vector2(0.0005, 0.0005)} // Halved the CA offset to keep it crisp
                       radialModulation={false}
                       modulationOffset={0}
                     />

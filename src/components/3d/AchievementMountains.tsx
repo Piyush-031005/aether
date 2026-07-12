@@ -38,9 +38,10 @@ const LowPolyMountain = ({ achievement, position, rotation }: { achievement: any
       <RigidBody type="fixed" colliders="hull">
         <mesh geometry={geometry}>
           <meshStandardMaterial 
-            color="#1a252c" // Dark slate stone
-            roughness={0.9} 
-            metalness={0.1}
+            color="#151b22" // Dark slate stone
+            roughness={0.85} // Rocky and rough
+            metalness={0.2} // Slight metallic sheen for wet/basalt look
+            envMapIntensity={1.0} // React to HDRI
             flatShading // The key to the Bruno Simon low-poly look!
           />
           

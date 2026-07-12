@@ -102,7 +102,7 @@ export const CharacterController = () => {
     const speedRatio = Math.min(currentSpeed / SPEED, 1);
     audioSystem.setEngineSpeed(speedRatio);
 
-    // ── 4. Chase Camera ─────────────────────────────────────────
+    // ── 4. Advanced Camera Physics ─────────────────────────────────────────
     const t = bodyRef.current.translation();
     _playerPos.set(t.x, t.y, t.z);
     
@@ -112,8 +112,20 @@ export const CharacterController = () => {
     _cameraOffset.set(0, 2.5, -5).applyAxisAngle(_yAxis, rotationAngle.current);
     _idealCameraPos.copy(_playerPos).add(_cameraOffset);
 
-    cameraPos.current.lerp(_idealCameraPos, 0.06);
+    // Frame-rate independent spring smoothing for the camera
+    const lerpFactor = 1 - Math.exp(-10 * delta); // Smooth lag
+    cameraPos.current.lerp(_idealCameraPos, lerpFactor);
     state.camera.position.copy(cameraPos.current);
+
+    // Dynamic FOV (Warp speed effect)
+    const baseFov = 50;
+    const targetFov = baseFov + (speedRatio * 15); // Expands FOV by up to 15 degrees at max speed
+    // Check if state.camera is a PerspectiveCamera before setting fov
+    if ((state.camera as THREE.PerspectiveCamera).isPerspectiveCamera) {
+      const cam = state.camera as THREE.PerspectiveCamera;
+      cam.fov = THREE.MathUtils.lerp(cam.fov, targetFov, delta * 2);
+      cam.updateProjectionMatrix();
+    }
 
     _cameraTarget.set(t.x, t.y + 1.2, t.z);
     state.camera.lookAt(_cameraTarget);

@@ -20,15 +20,18 @@ This document serves as a comprehensive log of everything we have built for the 
 - **Achievement Mountains**: Colossal mountain peaks on the horizon that project massive holographic text of your achievements into the sky.
 - **Bioluminescent Forest**: Procedurally generated cyber-trees with glowing neon rings.
 - **Custom Shaders**: A custom animated Water/Liquid shader material with deep cyan emissions.
-- **Dynamic Weather**: A `CyberRain` system with high-speed falling particles.
 
-## 4. UI & Navigation (`MiniMap` & `OverlayUI`)
-- **Interactive Mini-Map**: A glassmorphism radar in the bottom right corner with a sweeping scanner.
-- **Expandable Map View**: Clicking the radar expands it into a massive screen-centered map containing text labels for specific map zones (`PROJECTS`, `ACHIEVEMENTS`, `FOREST`).
-- **Player Tracking**: A green blip on the map perfectly tracks the player's X/Z coordinates in real-time.
+## 4. The Living Ecosystem (Tier 1 Polish)
+- **Dynamic Time of Day**: A full Day/Night cycle (`SkySystem.tsx`) with UI buttons that let you switch between `MORNING`, `GOLDEN HOUR`, and `NIGHT`, seamlessly transitioning the fog density, sky colors, and lighting.
+- **Mechanical Wildlife**: Procedurally animated, glowing robotic butterflies that flock around the Bioluminescent Forest and scatter/flee when the player gets too close!
+- **The Developer Desk**: A hidden Easter egg tucked behind the mountains featuring a low-poly desk, coffee mug, and a glowing CRT monitor with a secret message.
+
+## 5. UI, Maps, & Navigation
+- **Topographic Blueprint Map**: A highly detailed, interactive minimap that expands into a full-screen Topographic radar when clicked, showing exact coordinates of Poneglyphs, Mountains, and Forests.
+- **Blueprint Vision Mode (Signature Mechanic)**: Pressing the `B` key instantly drops all bloom/fog and applies a harsh `Scanline` shader, turning the entire 3D world into a technical engineering schematic.
 - **HTML Overlay UI**: A futuristic, hacker-style UI for displaying detailed project data, timeline history, and contact information when you interact with objects.
 
-## 5. Next-Gen Graphics & Audio (`App.tsx`)
+## 6. Next-Gen Graphics & Audio (`App.tsx`)
 - **AAA Post-Processing**: Enabled SMAA Anti-aliasing, Bloom (glow), Chromatic Aberration, and Film Grain noise.
 - **Audio System**: Implemented `Howler.js` for dynamic sound effects (Heartbeat during intro, Ambient wind/water in the world, and Hoverboard engine humming).
 - **High-Performance**: Enabled high `dpr` (device pixel ratio) and hardware-accelerated rendering for a crisp, 1080p+ visual quality.
