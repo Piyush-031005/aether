@@ -10,9 +10,9 @@ export const EnergyGrid = () => {
         Size: 150x150 to cover all districts 
       */}
       <RigidBody type="fixed" colliders="cuboid" position={[0, -0.6, 0]}>
-        <mesh receiveShadow visible={false}>
+        <mesh receiveShadow>
           <boxGeometry args={[150, 1.2, 150]} />
-          <meshStandardMaterial color="#020202" metalness={0.9} roughness={0.1} />
+          <meshStandardMaterial transparent opacity={0} depthWrite={false} />
         </mesh>
       </RigidBody>
 
