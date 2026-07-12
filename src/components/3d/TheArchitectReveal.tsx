@@ -101,9 +101,6 @@ export const TheArchitectReveal = () => {
     // Rotate on axis (slowly)
     tl.to(skeletonSpinRef.current!.rotation, { y: Math.PI * 2, duration: 5, ease: 'power2.inOut' }, 2);
     
-    // Front view zooms in (move closer to camera in Z)
-    tl.to(rootRef.current!.position, { z: 2.5, y: -1.2, duration: 4, ease: 'power2.inOut' }, 3);
-
     // Red and Blue Fibers form AROUND the skeleton
     tl.to(nerveRedMats, { opacity: 0.8, duration: 3, ease: 'power2.inOut' }, 6);
     tl.to(nerveBlueMats, { opacity: 0.8, duration: 3, ease: 'power2.inOut' }, 6.5);
@@ -117,9 +114,6 @@ export const TheArchitectReveal = () => {
     tl.to(skelMats, { opacity: 0, duration: 2, ease: 'power2.inOut' }, 11);
     tl.to(nerveRedMats, { opacity: 0, duration: 2, ease: 'power2.inOut' }, 11.5);
     tl.to(nerveBlueMats, { opacity: 0, duration: 2, ease: 'power2.inOut' }, 11.5);
-
-    // Zoom back out
-    tl.to(rootRef.current!.position, { z: 0, y: -1, duration: 3, ease: 'power2.inOut' }, 13);
 
     // Wrap the character in the Cocoon Ball
     tl.to(wireMat.current, { opacity: 0.8, duration: 1.5, ease: 'power2.inOut' }, 14);
