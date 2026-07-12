@@ -103,15 +103,15 @@ export const BiotechEnvironment = () => {
 
   return (
     <group>
-      {/* Massive Cyber-Ocean Base */}
-      <mesh position={[0, -0.2, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-        <planeGeometry args={[200, 200, 128, 128]} />
+      {/* Massive Cyber-Ocean (North Side) */}
+      <mesh position={[0, -0.5, -50]} rotation={[-Math.PI / 2, 0, 0]}>
+        <planeGeometry args={[200, 100, 128, 64]} />
         <WaterMaterial />
       </mesh>
 
-      {/* Sand Dunes (Digital Terrain) */}
-      <mesh position={[0, -0.1, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-        <planeGeometry args={[160, 160, 64, 64]} />
+      {/* Sand Dunes (South Side / Central Landmass) */}
+      <mesh position={[0, -0.1, 50]} rotation={[-Math.PI / 2, 0, 0]}>
+        <planeGeometry args={[200, 100, 64, 64]} />
         <meshStandardMaterial 
           color="#1A2B20" 
           metalness={0.1} 
@@ -120,10 +120,10 @@ export const BiotechEnvironment = () => {
         />
       </mesh>
 
-      {/* The Great Digital Waterfall */}
-      <group position={[0, 20, -80]}>
+      {/* The Great Digital Waterfall (Far North) */}
+      <group position={[0, 20, -95]}>
         <mesh>
-          <boxGeometry args={[40, 50, 2]} />
+          <boxGeometry args={[60, 50, 2]} />
           <meshPhysicalMaterial 
             color="#00BCD4"
             transmission={0.9}
