@@ -12,6 +12,7 @@ import { audioSystem } from './systems/AudioSystem';
 import { OverlayUI } from './components/ui/OverlayUI';
 import { JoystickUI } from './components/ui/JoystickUI';
 import { MiniMap } from './components/ui/MiniMap';
+import { useTimeStore } from './components/3d/SkySystem';
 
 // Key bindings map for the character controller
 const keyboardMap = [
@@ -24,6 +25,8 @@ const keyboardMap = [
 
 function App() {
   const [phase, setPhase] = useState<'idle' | 'void' | 'world'>('idle');
+  const setTimeOfDay = useTimeStore(state => state.setTimeOfDay);
+  const timeOfDay = useTimeStore(state => state.timeOfDay);
 
   const handleInitialize = () => {
     setPhase('void');
@@ -45,7 +48,7 @@ function App() {
       {/* 3D Canvas Layer */}
       <div className="canvas-container">
         <KeyboardControls map={keyboardMap}>
-          <Canvas dpr={[1, 2]} shadows camera={{ position: [0, 2, 5], fov: 50 }} gl={{ antialias: true }}>
+          <Canvas dpr={[1.5, 2]} shadows camera={{ position: [0, 2, 5], fov: 50 }} gl={{ antialias: true, powerPreference: "high-performance" }}>
             <Suspense fallback={null}>
               
               {phase === 'void' && <TheVoid />}
@@ -140,22 +143,55 @@ function App() {
         )}
 
         {phase === 'world' && (
-          <div style={{
-            position: 'absolute',
-            top: '20px',
-            left: '20px',
-            fontFamily: 'var(--font-mono)',
-            color: 'var(--color-text-main)',
-            fontSize: '12px',
-            letterSpacing: '2px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '8px'
-          }}>
-            <div><span style={{ color: 'var(--color-primary)' }}>[W,A,S,D]</span> MOVE</div>
-            <div><span style={{ color: 'var(--color-accent)' }}>[E]</span> INTERACT</div>
-            <div><span style={{ color: 'var(--color-accent)' }}>ZONE:</span> PROTOTYPE VALLEY</div>
-          </div>
+          <>
+            <div style={{
+              position: 'absolute',
+              top: '20px',
+              left: '20px',
+              fontFamily: 'var(--font-mono)',
+              color: 'var(--color-text-main)',
+              fontSize: '12px',
+              letterSpacing: '2px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '8px'
+            }}>
+              <div><span style={{ color: 'var(--color-primary)' }}>[W,A,S,D]</span> MOVE</div>
+              <div><span style={{ color: 'var(--color-accent)' }}>[E]</span> INTERACT</div>
+              <div><span style={{ color: 'var(--color-accent)' }}>ZONE:</span> PROTOTYPE VALLEY</div>
+            </div>
+
+            {/* Time of Day Toggles */}
+            <div style={{
+              position: 'absolute',
+              top: '20px',
+              right: '20px',
+              display: 'flex',
+              gap: '10px',
+              pointerEvents: 'auto'
+            }}>
+              {(['morning', 'golden_hour', 'night'] as const).map(time => (
+                <button
+                  key={time}
+                  onClick={() => setTimeOfDay(time)}
+                  style={{
+                    background: timeOfDay === time ? 'rgba(0, 188, 212, 0.8)' : 'rgba(10, 20, 30, 0.6)',
+                    color: timeOfDay === time ? '#000' : '#00BCD4',
+                    border: '1px solid #00BCD4',
+                    padding: '8px 12px',
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '10px',
+                    textTransform: 'uppercase',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s',
+                    backdropFilter: 'blur(5px)'
+                  }}
+                >
+                  {time.replace('_', ' ')}
+                </button>
+              ))}
+            </div>
+          </>
         )}
       </div>
 

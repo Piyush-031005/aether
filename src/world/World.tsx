@@ -1,6 +1,7 @@
 import React from 'react';
 import { Sky, Stars } from '@react-three/drei';
 
+import { SkySystem } from '../components/3d/SkySystem';
 import { CharacterController } from './CharacterController';
 import { SkyFoundry } from './districts/SkyFoundry';
 import { VerdantCircuit } from './districts/VerdantCircuit';
@@ -15,15 +16,13 @@ import { OnePieceEasterEgg } from '../components/3d/OnePieceEasterEgg';
 export const World = () => {
   return (
     <group>
-      <Sky sunPosition={[100, 20, 100]} turbidity={0.1} rayleigh={0.1} />
       <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
       
-      {/* Dynamic Lighting */}
-      <ambientLight intensity={0.2} color="#ffffff" />
-      <directionalLight position={[10, 20, 10]} intensity={1.5} color="#FF5F1F" castShadow />
+      {/* Dynamic Time of Day System */}
+      <SkySystem />
       
-      {/* Fog for depth and atmosphere */}
-      <fog attach="fog" args={['#0A0A0A', 20, 100]} />
+      {/* Fog for depth and atmosphere (controlled dynamically by SkySystem) */}
+      <fogExp2 attach="fog" args={['#050510', 0.01]} />
 
       {/* The 150x150 Unified Cyber-Grid Floor */}
       <EnergyGrid />
