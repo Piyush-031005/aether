@@ -8,6 +8,7 @@ import { FloatingAI } from '../components/3d/FloatingAI';
 import { audioSystem } from '../systems/AudioSystem';
 
 import { useJoystickStore } from '../store/useJoystickStore';
+import { playerPositionStore } from '../components/ui/MiniMap';
 
 const SPEED = 25;
 const ROTATION_SPEED = 3;
@@ -106,9 +107,7 @@ export const CharacterController = () => {
     _playerPos.set(t.x, t.y, t.z);
     
     // Sync to global store for the UI minimap
-    import('../components/ui/MiniMap').then(m => {
-      m.playerPositionStore.current.copy(_playerPos);
-    });
+    playerPositionStore.current.copy(_playerPos);
 
     _cameraOffset.set(0, 2.5, -5).applyAxisAngle(_yAxis, rotationAngle.current);
     _idealCameraPos.copy(_playerPos).add(_cameraOffset);
