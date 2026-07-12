@@ -44,7 +44,7 @@ function App() {
       {/* 3D Canvas Layer */}
       <div className="canvas-container">
         <KeyboardControls map={keyboardMap}>
-          <Canvas dpr={[1, 2]} shadows camera={{ position: [0, 2, 5], fov: 50 }} gl={{ antialias: false }}>
+          <Canvas dpr={[1, 2]} shadows camera={{ position: [0, 2, 5], fov: 50 }} gl={{ antialias: true }}>
             <Suspense fallback={null}>
               
               {phase === 'void' && <TheVoid />}
@@ -56,7 +56,7 @@ function App() {
               )}
               
               {/* God-Tier AAA Post-Processing */}
-              <EffectComposer multisampling={0}>
+              <EffectComposer multisampling={4}>
                 <SMAA />
                 <Bloom 
                   luminanceThreshold={0.5} 

@@ -16,9 +16,13 @@ export const TheArchitectReveal = () => {
   const nerveBlueRef = useRef<THREE.Group>(null);
   const fleshRef = useRef<THREE.Group>(null);
   
+  // Cocoon Refs
+  const cocoonRef = useRef<THREE.Group>(null);
+  const wireMat = useRef<THREE.MeshBasicMaterial>(null);
+  const coreMat = useRef<THREE.MeshStandardMaterial>(null);
+  
   const flashLight = useRef<THREE.PointLight>(null);
 
-  // 1. Skeleton Clone
   const skeletonMesh = useMemo(() => {
     const clone = skelScene.clone();
     clone.traverse((child) => {
@@ -35,7 +39,6 @@ export const TheArchitectReveal = () => {
     return clone;
   }, [skelScene]);
 
-  // 2. Red Fibers Clone
   const nerveRedMesh = useMemo(() => {
     const clone = meScene.clone();
     clone.traverse((child) => {
@@ -47,7 +50,6 @@ export const TheArchitectReveal = () => {
     return clone;
   }, [meScene]);
 
-  // 3. Blue Fibers Clone
   const nerveBlueMesh = useMemo(() => {
     const clone = meScene.clone();
     clone.traverse((child) => {
@@ -59,7 +61,6 @@ export const TheArchitectReveal = () => {
     return clone;
   }, [meScene]);
 
-  // 4. Flesh Clone (Actual materials)
   const fleshMesh = useMemo(() => {
     const clone = meScene.clone();
     clone.traverse((child) => {
@@ -77,6 +78,7 @@ export const TheArchitectReveal = () => {
   }, [meScene]);
 
   useEffect(() => {
+    // Slower Timeline
     const tl = gsap.timeline({ delay: 1 });
 
     const getMats = (clone: THREE.Group) => {
@@ -93,34 +95,43 @@ export const TheArchitectReveal = () => {
     const fleshMats = getMats(fleshMesh);
 
     // Initial Rise
-    tl.to(rootRef.current!.position, { y: -1, duration: 2, ease: 'power2.out' }, 0);
-    tl.to(skelMats, { opacity: 1, duration: 2, ease: 'power2.inOut' }, 0);
+    tl.to(rootRef.current!.position, { y: -1, duration: 4, ease: 'power2.out' }, 0);
+    tl.to(skelMats, { opacity: 1, duration: 3, ease: 'power2.inOut' }, 0);
     
-    // Rotate on axis
-    tl.to(skeletonSpinRef.current!.rotation, { y: Math.PI * 2, duration: 3, ease: 'power2.inOut' }, 1.5);
+    // Rotate on axis (slowly)
+    tl.to(skeletonSpinRef.current!.rotation, { y: Math.PI * 2, duration: 5, ease: 'power2.inOut' }, 2);
     
     // Front view zooms in (move closer to camera in Z)
-    tl.to(rootRef.current!.position, { z: 3, y: -1.5, duration: 2, ease: 'power2.inOut' }, 3);
+    tl.to(rootRef.current!.position, { z: 2.5, y: -1.2, duration: 4, ease: 'power2.inOut' }, 3);
 
-    // Red and Blue Fibers form around the skeleton
-    tl.to(nerveRedMats, { opacity: 0.8, duration: 2, ease: 'power2.inOut' }, 4.5);
-    tl.to(nerveBlueMats, { opacity: 0.8, duration: 2, ease: 'power2.inOut' }, 4.8);
+    // Red and Blue Fibers form AROUND the skeleton
+    tl.to(nerveRedMats, { opacity: 0.8, duration: 3, ease: 'power2.inOut' }, 6);
+    tl.to(nerveBlueMats, { opacity: 0.8, duration: 3, ease: 'power2.inOut' }, 6.5);
 
-    // Skeleton flows DOWN and disappears
-    tl.to(skeletonRef.current!.position, { y: -5, duration: 2, ease: 'power2.in' }, 6.5);
-    tl.to(skelMats, { opacity: 0, duration: 1.5, ease: 'power2.in' }, 6.8);
-    tl.to(nerveRedMats, { opacity: 0, duration: 1.5, ease: 'power2.in' }, 7.0);
-    tl.to(nerveBlueMats, { opacity: 0, duration: 1.5, ease: 'power2.in' }, 7.0);
-
-    // Zoom back out to normal gameplay position as character forms
-    tl.to(rootRef.current!.position, { z: 0, y: -1, duration: 2, ease: 'power2.inOut' }, 7.5);
-
-    // Character arises
-    tl.to(fleshMats, { opacity: 1, duration: 2, ease: 'power2.out' }, 8.0);
+    // Character (flesh) arises FROM INSIDE the skeleton (scaling up slowly)
+    fleshRef.current!.scale.set(0.95, 0.95, 0.95);
+    tl.to(fleshRef.current!.scale, { x: 1, y: 1, z: 1, duration: 4, ease: 'power2.out' }, 9);
+    tl.to(fleshMats, { opacity: 1, duration: 4, ease: 'power2.inOut' }, 9);
     
+    // Skeleton and Nerves fade out AFTER character is formed
+    tl.to(skelMats, { opacity: 0, duration: 2, ease: 'power2.inOut' }, 11);
+    tl.to(nerveRedMats, { opacity: 0, duration: 2, ease: 'power2.inOut' }, 11.5);
+    tl.to(nerveBlueMats, { opacity: 0, duration: 2, ease: 'power2.inOut' }, 11.5);
+
+    // Zoom back out
+    tl.to(rootRef.current!.position, { z: 0, y: -1, duration: 3, ease: 'power2.inOut' }, 13);
+
+    // Wrap the character in the Cocoon Ball
+    tl.to(wireMat.current, { opacity: 0.8, duration: 1.5, ease: 'power2.inOut' }, 14);
+    tl.to(coreMat.current, { opacity: 0.9, duration: 1.5, ease: 'power1.inOut' }, 14.5);
+
+    // Cocoon shrinks and implodes into the flash
+    tl.to(cocoonRef.current!.scale, { x: 0.1, y: 0.1, z: 0.1, duration: 1, ease: 'power2.in' }, 16);
+    tl.to([wireMat.current, coreMat.current], { opacity: 0, duration: 0.5, ease: 'power2.in' }, 16.5);
+
     // World Spawn Flash
-    tl.to(flashLight.current, { intensity: 50, duration: 0.2, ease: 'expo.in' }, 9.5);
-    tl.to(flashLight.current, { intensity: 0, duration: 1.5, ease: 'power2.out' }, 9.7);
+    tl.to(flashLight.current, { intensity: 50, duration: 0.2, ease: 'expo.in' }, 16.8);
+    tl.to(flashLight.current, { intensity: 0, duration: 2, ease: 'power2.out' }, 17.0);
 
   }, [skeletonMesh, nerveRedMesh, nerveBlueMesh, fleshMesh]);
 
@@ -128,14 +139,30 @@ export const TheArchitectReveal = () => {
     if (rootRef.current) {
       rootRef.current.position.y += Math.sin(state.clock.elapsedTime * 2) * 0.002;
     }
+    if (cocoonRef.current) {
+      cocoonRef.current.rotation.y = state.clock.elapsedTime * 1.5;
+      cocoonRef.current.rotation.x = state.clock.elapsedTime * 0.8;
+    }
   });
 
   return (
     <group position={[0, 0, 0]}>
+      
+      {/* Cocoon wrappers (centered around the character's core) */}
+      <group ref={cocoonRef} position={[0, 0, 0]}>
+        <mesh>
+          <icosahedronGeometry args={[2.5, 3]} />
+          <meshBasicMaterial ref={wireMat} color="#00BCD4" wireframe transparent opacity={0} />
+        </mesh>
+        <mesh>
+          <octahedronGeometry args={[2.2, 2]} />
+          <meshStandardMaterial ref={coreMat} color="#121820" metalness={0.9} roughness={0.1} transparent opacity={0} />
+        </mesh>
+      </group>
+
       <group ref={rootRef} position={[0, -5, 0]}>
-        
         <group ref={skeletonSpinRef}>
-          {/* Skeleton doubled in size and flipped back to normal rotation */}
+          {/* Skeleton doubled in size */}
           <group ref={skeletonRef} rotation={[0, 0, 0]} position={[0, 0, 0]} scale={[2, 2, 2]}>
             <primitive object={skeletonMesh} />
           </group>
@@ -147,7 +174,6 @@ export const TheArchitectReveal = () => {
           {/* Final Character */}
           <group ref={fleshRef}><primitive object={fleshMesh} /></group>
         </group>
-
       </group>
 
       <pointLight ref={flashLight} color="#00BCD4" position={[0, 2, 0]} intensity={0} distance={150} decay={2} />
