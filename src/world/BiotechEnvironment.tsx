@@ -123,7 +123,7 @@ export const BiotechEnvironment = () => {
       <mesh position={[0, -0.1, 50]} rotation={[-Math.PI / 2, 0, 0]}>
         <planeGeometry args={[200, 100, 64, 64]} />
         <meshStandardMaterial 
-          color="#1A2B20" 
+          color="#F5F5DC" // Beige
           metalness={0.1} 
           roughness={0.9} 
           wireframe={false} 

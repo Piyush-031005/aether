@@ -118,12 +118,12 @@ export const CharacterController = () => {
   return (
     <RigidBody
       ref={bodyRef}
-      colliders={false}
+      colliders="hull"
       mass={1}
       type="dynamic"
-      position={[0, 2, 0]}
-      enabledRotations={[false, false, false]}
-      linearDamping={2}
+      position={[0, 5, 30]}
+      enabledRotations={[false, true, false]}
+      friction={0}
     >
       <CapsuleCollider args={[0.5, 0.5]} />
 
