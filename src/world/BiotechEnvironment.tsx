@@ -104,13 +104,13 @@ export const BiotechEnvironment = () => {
   return (
     <group>
       {/* Massive Cyber-Ocean Base */}
-      <mesh position={[0, -2.5, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+      <mesh position={[0, -0.2, 0]} rotation={[-Math.PI / 2, 0, 0]}>
         <planeGeometry args={[200, 200, 128, 128]} />
         <WaterMaterial />
       </mesh>
 
       {/* Sand Dunes (Digital Terrain) */}
-      <mesh position={[0, -2, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+      <mesh position={[0, -0.1, 0]} rotation={[-Math.PI / 2, 0, 0]}>
         <planeGeometry args={[160, 160, 64, 64]} />
         <meshStandardMaterial 
           color="#1A2B20" 
