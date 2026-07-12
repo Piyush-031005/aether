@@ -1,8 +1,8 @@
-import React, { Suspense, useState } from 'react';
+import React, { Suspense, useState, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { Preload, KeyboardControls } from '@react-three/drei';
 import { Physics } from '@react-three/rapier';
-import { EffectComposer, Bloom, ChromaticAberration, Noise, SMAA } from '@react-three/postprocessing';
+import { EffectComposer, Bloom, ChromaticAberration, Noise, SMAA, Scanline } from '@react-three/postprocessing';
 import { BlendFunction } from 'postprocessing';
 import * as THREE from 'three';
 
@@ -13,6 +13,8 @@ import { OverlayUI } from './components/ui/OverlayUI';
 import { JoystickUI } from './components/ui/JoystickUI';
 import { MiniMap } from './components/ui/MiniMap';
 import { useTimeStore } from './components/3d/SkySystem';
+
+import { useBlueprintStore } from './stores/BlueprintStore';
 
 // Key bindings map for the character controller
 const keyboardMap = [
@@ -27,6 +29,17 @@ function App() {
   const [phase, setPhase] = useState<'idle' | 'void' | 'world'>('idle');
   const setTimeOfDay = useTimeStore(state => state.setTimeOfDay);
   const timeOfDay = useTimeStore(state => state.timeOfDay);
+  const { isBlueprintMode, toggleBlueprintMode } = useBlueprintStore();
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key.toLowerCase() === 'b') {
+        toggleBlueprintMode();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [toggleBlueprintMode]);
 
   const handleInitialize = () => {
     setPhase('void');
@@ -61,19 +74,30 @@ function App() {
               
               {/* God-Tier AAA Post-Processing */}
               <EffectComposer multisampling={4}>
-                <SMAA />
-                <Bloom 
-                  luminanceThreshold={0.5} 
-                  mipmapBlur 
-                  intensity={1.2} 
-                />
-                <ChromaticAberration 
-                  blendFunction={BlendFunction.NORMAL} 
-                  offset={new THREE.Vector2(0.001, 0.001)} 
-                  radialModulation={false}
-                  modulationOffset={0}
-                />
-                <Noise opacity={0.03} />
+                {!isBlueprintMode ? (
+                  <>
+                    <SMAA />
+                    <Bloom 
+                      luminanceThreshold={0.5} 
+                      mipmapBlur 
+                      intensity={1.2} 
+                    />
+                    <ChromaticAberration 
+                      blendFunction={BlendFunction.NORMAL} 
+                      offset={new THREE.Vector2(0.001, 0.001)} 
+                      radialModulation={false}
+                      modulationOffset={0}
+                    />
+                    <Noise opacity={0.03} />
+                  </>
+                ) : (
+                  <>
+                    {/* Blueprint Vision Mode Filters */}
+                    <SMAA />
+                    <Scanline density={100} opacity={0.5} />
+                    <Noise opacity={0.1} />
+                  </>
+                )}
               </EffectComposer>
 
               <Preload all />

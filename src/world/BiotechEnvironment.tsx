@@ -6,6 +6,8 @@ import { CyberRain } from './CyberRain';
 import { ProjectPoneglyphs } from '../components/3d/ProjectPoneglyphs';
 import { AchievementMountains } from '../components/3d/AchievementMountains';
 import { Signpost } from '../components/3d/Signpost';
+import { MechanicalButterflies } from '../components/3d/MechanicalButterflies';
+import { DeveloperDesk } from '../components/3d/DeveloperDesk';
 
 // Custom Water Shader Material
 const WaterMaterial = () => {
@@ -153,6 +155,12 @@ export const BiotechEnvironment = () => {
       {/* Epic Monuments */}
       <ProjectPoneglyphs />
       <AchievementMountains />
+
+      {/* Mechanical Wildlife */}
+      <MechanicalButterflies count={30} center={new THREE.Vector3(15, 5, 15)} radius={20} />
+
+      {/* Hidden Easter Egg Area */}
+      <DeveloperDesk />
 
       {/* Bioluminescent Forest */}
       {treePositions.map((pos, idx) => (
