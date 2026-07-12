@@ -150,11 +150,6 @@ export const BiotechEnvironment = () => {
         <pointLight color="#00BCD4" position={[0, -10, 5]} intensity={5} distance={50} decay={2} />
       </group>
 
-      {/* Physical Signposts pointing to Zones */}
-      <Signpost position={[0, 0, 10]} rotation={[0, 0, 0]} label="^ ACHIEVEMENTS" color="#00BCD4" />
-      <Signpost position={[-15, 0, 15]} rotation={[0, Math.PI / 4, 0]} label="<- PONEGLYPH PROJECTS" color="#FF5F1F" />
-      <Signpost position={[15, 0, 15]} rotation={[0, -Math.PI / 4, 0]} label="DIGITAL FOREST ->" color="#00FF7F" />
-
       {/* Epic Monuments */}
       <ProjectPoneglyphs />
       <AchievementMountains />

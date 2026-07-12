@@ -80,11 +80,11 @@ export const CharacterController = () => {
 
     const vel = bodyRef.current.linvel();
     
-    // Calculate new Y velocity (Flight)
+    // Calculate new Y velocity (Flight / Big Jump)
     // If not flying, let gravity do its job, but dampen falling slightly
     let newY = vel.y;
     if (verticalThrust !== 0) {
-      newY = THREE.MathUtils.lerp(vel.y, verticalThrust * (SPEED * 0.5), 0.1);
+      newY = THREE.MathUtils.lerp(vel.y, verticalThrust * (SPEED * 0.8), 0.1); // Increased from 0.5 to 0.8 for big jump!
     }
 
     bodyRef.current.setLinvel(
