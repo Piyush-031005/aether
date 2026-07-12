@@ -106,7 +106,7 @@ export const CharacterController = () => {
     _playerPos.set(t.x, t.y, t.z);
     
     // Sync to global store for the UI minimap
-    import('../../components/ui/MiniMap').then(m => {
+    import('../components/ui/MiniMap').then(m => {
       m.playerPositionStore.current.copy(_playerPos);
     });
 
