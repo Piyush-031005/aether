@@ -122,7 +122,7 @@ export const CharacterController = () => {
       mass={1}
       type="dynamic"
       position={[0, 5, 30]}
-      enabledRotations={[false, true, false]}
+      enabledRotations={[false, false, false]}
       friction={0}
     >
       <CapsuleCollider args={[0.5, 0.5]} />

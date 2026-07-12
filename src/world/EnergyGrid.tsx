@@ -28,7 +28,7 @@ export const EnergyGrid = () => {
         cellColor="#00FF7F" // Green
         sectionSize={10} 
         sectionThickness={1.5} 
-        sectionColor="#F5F5DC" // Beige
+        sectionColor="#ffefbe"
         fadeDistance={50} 
         fadeStrength={1} 
       />
