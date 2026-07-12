@@ -3,6 +3,8 @@ import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { BioTree } from '../components/3d/BioTree';
 import { CyberRain } from './CyberRain';
+import { ProjectPoneglyphs } from '../components/3d/ProjectPoneglyphs';
+import { AchievementMountains } from '../components/3d/AchievementMountains';
 
 // Custom Water Shader Material
 const WaterMaterial = () => {
@@ -146,6 +148,10 @@ export const BiotechEnvironment = () => {
         {/* Waterfall Particle Glow */}
         <pointLight color="#00BCD4" position={[0, -10, 5]} intensity={5} distance={50} decay={2} />
       </group>
+
+      {/* Epic Monuments */}
+      <ProjectPoneglyphs />
+      <AchievementMountains />
 
       {/* Bioluminescent Forest */}
       {treePositions.map((pos, idx) => (

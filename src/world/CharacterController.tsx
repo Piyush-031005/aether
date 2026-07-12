@@ -104,6 +104,11 @@ export const CharacterController = () => {
     // ── 4. Chase Camera ─────────────────────────────────────────
     const t = bodyRef.current.translation();
     _playerPos.set(t.x, t.y, t.z);
+    
+    // Sync to global store for the UI minimap
+    import('../../components/ui/MiniMap').then(m => {
+      m.playerPositionStore.current.copy(_playerPos);
+    });
 
     _cameraOffset.set(0, 2.5, -5).applyAxisAngle(_yAxis, rotationAngle.current);
     _idealCameraPos.copy(_playerPos).add(_cameraOffset);
