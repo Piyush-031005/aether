@@ -1,49 +1,72 @@
-import React, { useRef } from 'react';
-import { useFrame } from '@react-three/fiber';
+import React, { useMemo } from 'react';
 import { Text } from '@react-three/drei';
 import { RigidBody } from '@react-three/rapier';
 import { PORTFOLIO_DATA } from '../../data/portfolio';
 import * as THREE from 'three';
 
-const AchievementMountain = ({ achievement, position, rotation }: { achievement: any, position: [number, number, number], rotation: [number, number, number] }) => {
-  const meshRef = useRef<THREE.Mesh>(null);
+const LowPolyMountain = ({ achievement, position, rotation }: { achievement: any, position: [number, number, number], rotation: [number, number, number] }) => {
+  // Generate procedural low-poly terrain for the mountain
+  const geometry = useMemo(() => {
+    const geo = new THREE.PlaneGeometry(30, 30, 16, 16);
+    geo.rotateX(-Math.PI / 2); // Lay flat
+    
+    // Displace vertices to form a peak
+    const posAttribute = geo.attributes.position;
+    for (let i = 0; i < posAttribute.count; i++) {
+      const x = posAttribute.getX(i);
+      const z = posAttribute.getZ(i);
+      
+      // Distance from center
+      const dist = Math.sqrt(x*x + z*z);
+      // Max height is 15, falls off based on distance
+      let y = Math.max(0, 15 - dist * 1.2);
+      
+      // Add random noise for jagged low-poly look
+      if (y > 0) {
+        y += (Math.random() - 0.5) * 3;
+      }
+      
+      posAttribute.setY(i, y);
+    }
+    
+    geo.computeVertexNormals();
+    return geo;
+  }, []);
 
   return (
     <group position={position} rotation={rotation}>
       <RigidBody type="fixed" colliders="hull">
-        <mesh ref={meshRef}>
-          {/* Massive Mountain / Tetrahedron */}
-          <tetrahedronGeometry args={[20, 1]} />
+        <mesh geometry={geometry}>
           <meshStandardMaterial 
-            color="#051015" 
-            roughness={0.8} 
-            metalness={0.2}
+            color="#1a252c" // Dark slate stone
+            roughness={0.9} 
+            metalness={0.1}
+            flatShading // The key to the Bruno Simon low-poly look!
           />
           
           {/* Glowing wireframe over mountain */}
           <mesh>
-            <tetrahedronGeometry args={[20.1, 1]} />
-            <meshBasicMaterial color="#00FF7F" wireframe transparent opacity={0.15} />
+            <primitive object={geometry} />
+            <meshBasicMaterial color="#00BCD4" wireframe transparent opacity={0.1} />
           </mesh>
 
-          {/* Achievement Title Text floating above or on the side */}
-          <group position={[0, 10, 8]} rotation={[-0.2, 0, 0]}>
+          {/* Achievement Title Text floating above the peak */}
+          <group position={[0, 16, 0]}>
             <Text
-              fontSize={1.5}
-              color="#00FF7F"
+              fontSize={1.2}
+              color="#00BCD4"
               anchorX="center"
               anchorY="middle"
               maxWidth={15}
               textAlign="center"
-              outlineWidth={0.05}
+              outlineWidth={0.03}
               outlineColor="#000"
             >
               {achievement.title.toUpperCase()}
-              <meshBasicMaterial toneMapped={false} />
             </Text>
             <Text
-              position={[0, -2, 0]}
-              fontSize={0.8}
+              position={[0, -1.5, 0]}
+              fontSize={0.6}
               color="#fff"
               anchorX="center"
               anchorY="middle"
@@ -60,17 +83,17 @@ const AchievementMountain = ({ achievement, position, rotation }: { achievement:
 };
 
 export const AchievementMountains = () => {
-  // Place them far in the distance along the east/west borders
+  // Place them far in the distance forming a mountain range
   const mountainPositions: [number, number, number][] = [
-    [-60, 5, -20],
-    [60, 5, 0],
-    [-50, 5, 40]
+    [-60, 0, -30],
+    [60, 0, -30],
+    [0, 0, -60]
   ];
 
   return (
     <group>
       {PORTFOLIO_DATA.achievements.map((ach, index) => (
-        <AchievementMountain 
+        <LowPolyMountain 
           key={index} 
           achievement={ach} 
           position={mountainPositions[index % mountainPositions.length]} 

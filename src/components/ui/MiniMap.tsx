@@ -59,8 +59,13 @@ export const MiniMap = () => {
         position: 'absolute', width: '100%', height: '100%',
         backgroundImage: 'linear-gradient(#00BCD4 1px, transparent 1px), linear-gradient(90deg, #00BCD4 1px, transparent 1px)',
         backgroundSize: '30px 30px',
-        opacity: 0.2
+        opacity: 0.15
       }} />
+
+      {/* Map Zone Labels */}
+      <div style={{ position: 'absolute', top: '15%', left: '50%', transform: 'translate(-50%, -50%)', fontSize: '8px', color: '#00BCD4', fontFamily: 'var(--font-mono)', fontWeight: 'bold' }}>ACHIEVEMENTS</div>
+      <div style={{ position: 'absolute', top: '50%', left: '15%', transform: 'translate(-50%, -50%)', fontSize: '8px', color: '#FF5F1F', fontFamily: 'var(--font-mono)', fontWeight: 'bold' }}>PROJECTS</div>
+      <div style={{ position: 'absolute', top: '50%', right: '-5%', transform: 'translate(-50%, -50%)', fontSize: '8px', color: '#00FF7F', fontFamily: 'var(--font-mono)', fontWeight: 'bold' }}>FOREST</div>
 
       {/* Radar Sweep Animation */}
       <style>{`
