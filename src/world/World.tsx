@@ -9,7 +9,7 @@ import { MemoryVault } from './districts/MemoryVault';
 import { HeliosReactor } from './districts/HeliosReactor';
 import { NeuralSandbox } from './districts/NeuralSandbox';
 import { EnergyGrid } from './EnergyGrid';
-import { DataMonoliths } from './DataMonoliths';
+import { BiotechEnvironment } from './BiotechEnvironment';
 import { OnePieceEasterEgg } from '../components/3d/OnePieceEasterEgg';
 
 export const World = () => {
@@ -28,8 +28,8 @@ export const World = () => {
       {/* The 150x150 Unified Cyber-Grid Floor */}
       <EnergyGrid />
       
-      {/* Procedural World Population */}
-      <DataMonoliths />
+      {/* The Biotech City Environment */}
+      <BiotechEnvironment />
       
       <SkyFoundry />        {/* Spawn: [0, 0, 0] */}
       <VerdantCircuit />    {/* Projects: [0, 0, -50] */}

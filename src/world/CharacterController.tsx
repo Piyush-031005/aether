@@ -63,10 +63,14 @@ export const CharacterController = () => {
       0.08
     );
 
-    // ── 3. Thrust ───────────────────────────────────────────────
+    // ── 3. Thrust & Flight ─────────────────────────────────────────
     let thrust = 0;
     if (forward) thrust = 1;
     if (backward) thrust = -0.5;
+
+    let verticalThrust = 0;
+    if (keys.jump) verticalThrust = 1;
+    if (keys.sprint) verticalThrust = -1; // Assuming 'sprint' is mapped to Shift for down
 
     _moveDir
       .set(0, 0, 1)
@@ -74,17 +78,25 @@ export const CharacterController = () => {
       .multiplyScalar(thrust * SPEED);
 
     const vel = bodyRef.current.linvel();
+    
+    // Calculate new Y velocity (Flight)
+    // If not flying, let gravity do its job, but dampen falling slightly
+    let newY = vel.y;
+    if (verticalThrust !== 0) {
+      newY = THREE.MathUtils.lerp(vel.y, verticalThrust * (SPEED * 0.5), 0.1);
+    }
+
     bodyRef.current.setLinvel(
       {
         x: THREE.MathUtils.lerp(vel.x, _moveDir.x, 0.06),
-        y: vel.y,
+        y: newY,
         z: THREE.MathUtils.lerp(vel.z, _moveDir.z, 0.06),
       },
       true
     );
 
     // Update engine pitch based on actual velocity
-    const currentSpeed = Math.sqrt(vel.x * vel.x + vel.z * vel.z);
+    const currentSpeed = Math.sqrt(vel.x * vel.x + newY * newY + vel.z * vel.z);
     const speedRatio = Math.min(currentSpeed / SPEED, 1);
     audioSystem.setEngineSpeed(speedRatio);
 
