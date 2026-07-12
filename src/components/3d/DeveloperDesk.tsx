@@ -62,7 +62,6 @@ export const DeveloperDesk = () => {
         rotation={[-0.1, 0, 0]}
         fontSize={0.15}
         color="#ffffff"
-        font="/fonts/Inter-Bold.woff"
         maxWidth={1.6}
         textAlign="center"
       >
