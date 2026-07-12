@@ -34,7 +34,7 @@ export const OverlayUI = () => {
       case 'project-1':
         return (
           <>
-            <h2 style={{ color: '#00BCD4', textTransform: 'uppercase', letterSpacing: '3px', borderBottom: '1px solid rgba(0,188,212,0.3)', paddingBottom: '10px' }}>DATABANK: Projects</h2>
+            <h2 style={{ color: '#00BCD4', textTransform: 'uppercase', letterSpacing: '3px', borderBottom: '1px solid rgba(0,188,212,0.3)', paddingBottom: '10px' }}>DATABANK: Creations</h2>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '25px', marginTop: '20px', maxHeight: '60vh', overflowY: 'auto', paddingRight: '10px' }}>
               {PORTFOLIO_DATA.projects.map((proj) => (
                 <div key={proj.id} style={{ background: 'rgba(0,0,0,0.4)', padding: '20px', borderLeft: '3px solid #00BCD4' }}>

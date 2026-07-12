@@ -37,7 +37,7 @@ export type ContactInfo = {
 // ------------------------------------------------------------------
 
 export const PORTFOLIO_DATA = {
-  about: "I am a Creative Technologist specializing in pushing the limits of the browser. My work bridges the gap between high-performance engineering and cinematic 3D art, creating immersive WebGL experiences that challenge traditional web design.",
+  about: "PIYUSH PUNERA\n\nExperience Engineer\n\nI don't build websites.\nI build experiences people remember.\n\nEvery project begins with a question:\n\"What if the browser could make someone stop, explore, and feel something?\"\n\nFrom intelligent AI platforms to cinematic WebGL worlds, I combine engineering, storytelling, and interaction to create digital experiences that blur the line between websites, games, and imagination.\n\nCurrently building AETHER — an original civilization where ideas become reality.",
   achievements: [
     { title: "Hackathon Winner", description: "First place in the global WebGL rendering challenge." },
     { title: "Awwwards Site of the Day", description: "Recognized for creative excellence in frontend architecture." },
@@ -46,22 +46,52 @@ export const PORTFOLIO_DATA = {
   projects: [
     {
       id: 'aether',
-      title: 'AETHER // The Creator Protocol',
-      description: 'A breathtaking, fully interactive AAA WebGL portfolio. Features a custom Third-Person Hoverboard physics controller, procedural generation, and highly optimized cinematic intro sequences.',
-      techStack: ['React Three Fiber', 'Rapier Physics', 'Zustand', 'GSAP', 'Three.js'],
+      title: '01 — AETHER',
+      description: 'A browser-native civilization. Cinematic intro, biomechanical world, blueprint mode, hoverboard mechanics.',
+      techStack: ['React Three Fiber', 'Rapier Physics', 'Three.js'],
       repo: 'https://github.com/Piyush-031005/aether'
     },
     {
       id: 'specimen',
-      title: 'SPECIMEN',
-      description: 'An interactive biomechanical web experience exploring the boundaries of procedural animation and auditory physics.',
-      techStack: ['WebGL', 'GLSL Shaders', 'Web Audio API', 'React'],
+      title: '02 — SPECIMEN',
+      description: 'A living digital organism. Procedural behaviour, neural evolution, mutation system that learns from the user.',
+      techStack: ['WebGL', 'Procedural Animation', 'Web Audio API'],
     },
     {
       id: 'limbo',
-      title: 'LIMBO // 領域',
-      description: 'A cinematic spatial UI exploration featuring glassmorphism layouts and complex state-driven architecture.',
-      techStack: ['TypeScript', 'Framer Motion', 'React'],
+      title: '03 — LIMBO',
+      description: 'An experiment about memory and attention. Entropy mechanics and interactive philosophy.',
+      techStack: ['TypeScript', 'Three.js', 'State Architecture'],
+    },
+    {
+      id: 'cognify',
+      title: '04 — Cognify',
+      description: 'Universal Cognitive Intelligence Platform. AI that understands how students learn, featuring behavior analysis and knowledge graphs.',
+      techStack: ['AI', 'Data Visualization', 'Full-Stack'],
+    },
+    {
+      id: 'healconnect',
+      title: '05 — HealConnect',
+      description: 'Human-centered healthcare communication. AI communication and medical workflow system.',
+      techStack: ['React', 'Healthcare AI', 'UX Design'],
+    },
+    {
+      id: 'shoeworld',
+      title: '06 — Shoe World',
+      description: 'A cinematic interactive product experience. Scroll-driven storytelling and interactive showroom.',
+      techStack: ['Three.js', 'GSAP', 'React Three Fiber'],
+    },
+    {
+      id: 'boncafe',
+      title: '07 — BON Café',
+      description: 'Luxury Brand Experience. Warm, editorial, premium café branding.',
+      techStack: ['Frontend', 'Editorial UI', 'Motion'],
+    },
+    {
+      id: 'reshot',
+      title: '08 — Reshot',
+      description: 'Creative Design Playground. Highly visual editorial layouts, creative transitions, and motion-heavy UI.',
+      techStack: ['Framer Motion', 'React', 'CSS'],
     }
   ] as Project[],
 
